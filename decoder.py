@@ -8,7 +8,6 @@ class Decoder(layers.Layer):
         super(Decoder, self).__init__()
         patches = 100
         self.num_decoder = num_decoder
-        #self.pos_encoding = positional_encoding(patches, feature_dim)
         self.dec_layers = [DecoderLayer(num_heads,key_dim,feature_dim,ff_dim,dropout)
                            for _ in range(num_decoder)]
         self.dropout = tf.keras.layers.Dropout(dropout)

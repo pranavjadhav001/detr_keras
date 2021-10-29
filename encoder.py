@@ -8,14 +8,11 @@ class Encoder(layers.Layer):
         super().__init__()
         patches = 64
         self.num_encoder = num_encoder
-        #self.pos_encoder = positional_encoding(patches,feature_dim)
         self.encoder_layers = [EncoderLayer(num_heads,key_dim,feature_dim,ff_dim,dropout) \
                               for _ in range(num_encoder)]
         self.dropout = layers.Dropout(dropout)
     
     def call(self,inputs,pos_embeddings,padding_mask,training=True):
-        #inputs += self.pos_encoder
-        #x = self.dropout(inputs,training=training)
         x = inputs
         for i in range(self.num_encoder):
             x = self.encoder_layers[i](x,pos_embeddings,\
