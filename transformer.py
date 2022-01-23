@@ -6,7 +6,7 @@ from utils import positional_encoding,FixedEmbedding
 import tensorflow as tf
 import numpy as np
 
-class Transformer(tf.keras.layers.Layer):
+class Transformer(tf.keras.Model):
     def __init__(self,num_encoder,num_decoder,num_heads,key_dim,feature_dim,ff_dim,dropout):
         super(Transformer,self).__init__()
         self.encoder = encoder.Encoder(num_encoder,num_heads,key_dim,feature_dim,ff_dim,dropout)

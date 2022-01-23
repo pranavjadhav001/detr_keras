@@ -21,9 +21,7 @@ class EncoderLayer(layers.Layer):
         attention_output = self.multiheadatt(query = query,key= key ,value = input,\
             attention_mask=attention_mask)
         attention_output = self.dropout1(attention_output,training=training)
-
         out1 = self.layernorm1(input+attention_output)
-
         ffn_output = self.feed_forward_layer(out1)
         ffn_output = self.dropout2(ffn_output,training=training)
         out2 = self.layernorm2(out1+ffn_output)

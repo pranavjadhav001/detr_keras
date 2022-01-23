@@ -3,7 +3,7 @@ from decoder_layer import DecoderLayer
 from utils import positional_encoding
 from tensorflow.keras import layers
 
-class Decoder(layers.Layer):
+class Decoder(tf.keras.Model):
     def __init__(self,num_decoder,num_heads,key_dim,feature_dim,ff_dim,dropout):
         super(Decoder, self).__init__()
         patches = 100
