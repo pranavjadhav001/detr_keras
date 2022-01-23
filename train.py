@@ -1,5 +1,5 @@
-
-def main(epochs,datagen,loss,model,optimizer)
+import time
+def main(epochs,datagen,loss,model,optimizer):
     for _ in range(epochs):
         batch_loss = []
         start = time.time()
