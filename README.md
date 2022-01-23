@@ -3,7 +3,7 @@ Tensorflow/keras implementation of End-to-End Object Detection with Transformers
 link : https://arxiv.org/abs/2005.12872
 ## TO-DO
 - [x] Model Architectures
-- [ ] Loss
-- [ ] Training
+- [x] Loss
+- [x] Training
 - [ ] Inference
-- [ ] DataGenerator  
+- [x] DataGenerator  
