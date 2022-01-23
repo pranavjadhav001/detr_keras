@@ -30,4 +30,4 @@ class Detr(tf.keras.Model):
         hs = self.transformer(x,self.query_embed(None),self.pos_encoder,None,True)
         bbox_output = self.bbox_embed(hs)
         class_output = self.class_embed(hs)
-        return bbox_output,class_output
+        return class_output,bbox_output
