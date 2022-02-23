@@ -1,12 +1,9 @@
 import tensorflow as tf
 import numpy as np
-from backbone import ResNet50Backbone
-import decoder
-import encoder
-import utils
-from fixed_embedding import FixedEmbedding
-from transformer import Transformer
-from position_embeddings import PositionEmbeddingSine
+from .backbone import ResNet50Backbone
+from .fixed_embedding import FixedEmbedding
+from .transformer import Transformer
+from .position_embeddings import PositionEmbeddingSine
 from tensorflow.keras.layers import Conv2D, ReLU
 
 class Detr(tf.keras.Model):

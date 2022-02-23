@@ -36,7 +36,7 @@ detr = Detr(num_queries=100,num_classes=len(coco_classes))
 detr.build([(1,inp_image.shape[0],inp_image.shape[1],3),\
 	(1,inp_image.shape[0],inp_image.shape[1])])
 detr.summary()
-detr.load_weights('new_detr.h5')
+detr.load_weights('models/new_detr.h5')
 
 
 inp_image = preprocess_input(inp_image)
