@@ -1,11 +1,11 @@
 import argparse
-from new_detr import Detr
+from detr.detr import Detr
 import tensorflow as tf
-from utils import *
-from position_embeddings import PositionEmbeddingSine
+from detr.utils import *
+from detr.position_embeddings import PositionEmbeddingSine
 import cv2
 import matplotlib.pyplot as plt
-from image_draw import BboxDraw
+from detr.image_draw import BboxDraw
 
 parser = argparse.ArgumentParser(formatter_class=
 	argparse.ArgumentDefaultsHelpFormatter)
