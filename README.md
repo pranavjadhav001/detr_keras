@@ -6,7 +6,7 @@ link : https://arxiv.org/abs/2005.12872
 python3 demo_coco.py --image_path path_to_image
 
 ## Results
-![alt text](https://github.com/pranavjadhav001/detr_keras/blob/master/images/sample_result.png)<br />
+![alt text](https://github.com/pranavjadhav001/detr_keras/blob/main/images/sample_result.png)
 
 ## TO-DO
 - [x] Model Architectures
