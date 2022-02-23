@@ -6,7 +6,7 @@ from tensorflow.keras import layers
 class Encoder(tf.keras.Model):
     def __init__(self,num_encoder,num_heads,key_dim,feature_dim,ff_dim,dropout):
         super().__init__()
-        patches = 64
+        patches = 256
         self.num_encoder = num_encoder
         self.encoder_layers = [EncoderLayer(num_heads,key_dim,feature_dim,ff_dim,dropout) \
                               for _ in range(num_encoder)]

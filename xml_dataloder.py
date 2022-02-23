@@ -50,7 +50,7 @@ class XML_Loader(tf.keras.utils.Sequence):
         new_bboxes[...,1] = new_bboxes[...,1]+math.floor((new_h-new_img.shape[0])/2)
         new_bboxes[...,2] = new_bboxes[...,2]+math.floor((new_w-new_img.shape[1])/2)
         new_bboxes[...,3] = new_bboxes[...,3]+math.floor((new_h-new_img.shape[0])/2)
-        new_bboxes = new_bboxes.astype(int)
+        new_bboxes = new_bboxes.astype(np.float32)
         bboxes = new_bboxes.copy().astype(np.float32)
         bboxes[...,0] = ((new_bboxes[...,0] + new_bboxes[...,2])//2)/desired_size[0]
         bboxes[...,1] = ((new_bboxes[...,1] + new_bboxes[...,3])//2)/desired_size[0]
@@ -74,41 +74,37 @@ class XML_Loader(tf.keras.utils.Sequence):
         targetbatch = []
         
         for Lindex in local_indexes:
-            imgpath, xmlpath = self.image_xml_path[Lindex]
-            img = cv2.imread(imgpath)
-            if img is None:
-                continue
-                
-            ih,iw,_ = img.shape
-            xmltree = ET.parse(xmlpath).getroot()
-            pts = ['xmin', 'ymin', 'xmax', 'ymax']
-            target = []
-            for obj in xmltree.iter('object'):
-                difficult = int(obj.find('difficult').text) == 1
-                name = obj.find('name').text.lower().strip().lower()
-                bbox = obj.find('bndbox')
-                # get face rect
-                bndbox = [int(bbox.find(pt).text) for pt in pts]
-                #img = cv2.rectangle(img, tuple(bndbox[:2]), tuple(bndbox[2:]), (0,0,255), 2)
-                #img = cv2.putText(img, name, tuple(bndbox[:2]), 3, 1, (0,255,0), 1)
-                target.append([int((bndbox[2]+bndbox[0])/2), int((bndbox[1]+bndbox[3])/2),\
-                               int((bndbox[2]-bndbox[0])), int((bndbox[3]-bndbox[1])), self.class_map[name]])
-                #bndbox.append(self.class_map[name])
-                #target.append(bndbox)
-
-            target = np.array(target, dtype=object)
-            target[:,0] = target[:,0]/iw
-            target[:,1] = target[:,1]/ih
-            target[:,2] = target[:,2]/iw
-            target[:,3] = target[:,3]/ih
-            img, target[:,:4] = self.letterbox_image_label(img,target[:,:4],desired_size=self.resize_dim)
-            img = self.preprocess_image(img)
-            targetbatch.append(target)
-            imgbatch.append(img)
-            
+            try:
+                imgpath, xmlpath = self.image_xml_path[Lindex]
+                img = cv2.imread(imgpath)
+                if img is None:
+                    continue
+                    
+                ih,iw,_ = img.shape
+                xmltree = ET.parse(xmlpath).getroot()
+                pts = ['xmin', 'ymin', 'xmax', 'ymax']
+                target = []
+                for obj in xmltree.iter('object'):
+                    difficult = int(obj.find('difficult').text) == 1
+                    name = obj.find('name').text.lower().strip().lower()
+                    bbox = obj.find('bndbox')
+                    # get face rect
+                    bndbox = [int(bbox.find(pt).text) for pt in pts]
+                    target.append([int((bndbox[2]+bndbox[0])/2), int((bndbox[1]+bndbox[3])/2),\
+                                   int((bndbox[2]-bndbox[0])), int((bndbox[3]-bndbox[1])), self.class_map[name]])
+                target = np.array(target, dtype=np.float32)
+                target[:,0] = target[:,0]/iw
+                target[:,1] = target[:,1]/ih
+                target[:,2] = target[:,2]/iw
+                target[:,3] = target[:,3]/ih
+                img, target[:,:4] = self.letterbox_image_label(img,target[:,:4],desired_size=self.resize_dim)
+                img = self.preprocess_image(img)
+                targetbatch.append(target)
+                imgbatch.append(img)
+            except:
+                pass
         imgbatch = np.array(imgbatch, dtype=np.float32)
-        
-        return imgbatch, targetbatch
+        return imgbatch, np.array(targetbatch)
 
     def on_epoch_end(self):
         # option method to run some logic at the end of each epoch: e.g. reshuffling

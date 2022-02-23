@@ -14,15 +14,15 @@ class EncoderLayer(layers.Layer):
         self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
         self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
         self.dropout1 = layers.Dropout(dropout)
-        self.dropout2 = layers.Dropout(dropout) 
+        self.dropout2 = layers.Dropout(dropout)
 
-    def call(self,input,pos_embeddings,training,attention_mask):
+    def call(self,input,pos_embeddings=None,training=False,attention_mask=None):
         query = key = input + pos_embeddings
         attention_output = self.multiheadatt(query = query,key= key ,value = input,\
-            attention_mask=attention_mask)
-        attention_output = self.dropout1(attention_output,training=training)
-        out1 = self.layernorm1(input+attention_output)
-        ffn_output = self.feed_forward_layer(out1)
-        ffn_output = self.dropout2(ffn_output,training=training)
-        out2 = self.layernorm2(out1+ffn_output)
-        return out2
+            attention_mask=attention_mask,training=False)
+        input += self.dropout1(attention_output,training=training)
+        input = self.layernorm1(input)
+        ffn_output = self.feed_forward_layer(input)
+        input += self.dropout2(ffn_output,training=training)
+        input = self.layernorm2(input)
+        return input

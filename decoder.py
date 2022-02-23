@@ -10,13 +10,16 @@ class Decoder(tf.keras.Model):
         self.num_decoder = num_decoder
         self.dec_layers = [DecoderLayer(num_heads,key_dim,feature_dim,ff_dim,dropout)
                            for _ in range(num_decoder)]
-        self.dropout = tf.keras.layers.Dropout(dropout)
+        #self.dropout = tf.keras.layers.Dropout(dropout)
+        self.norm = layers.LayerNormalization(epsilon=1e-5)
 
     def call(self, inputs,query_pos,pos_embeddings,encoder_outputs,training,
            look_ahead_mask, padding_mask):
         x = inputs
-        for i in range(self.num_decoder):
-            x = self.dec_layers[i](input=x,query_pos=query_pos,pos_embeddings=pos_embeddings,\
+        outputs = []
+        for layer in self.dec_layers:
+            x = layer(input=x,query_pos=query_pos,pos_embeddings=pos_embeddings,\
                 encoder_outputs=encoder_outputs,training=training,look_ahead_mask=look_ahead_mask,\
                 padding_mask=padding_mask)
-        return x
+            outputs.append(self.norm(x))
+        return tf.convert_to_tensor(outputs)
