@@ -1,3 +1,8 @@
+'''
+code taken from : https://github.com/qqwweee/keras-yolo3/blob/master/yolo.py
+User:qqwweee 
+Repository:keras-yolo3
+'''
 import colorsys
 from PIL import Image, ImageFont, ImageDraw
 import numpy as np

@@ -1,3 +1,8 @@
+'''
+Code taken from https://github.com/Leonardo-Blanger/detr_tensorflow/blob/38fc3c586b6767deed09bd7ec6c2a2fd7002346e/detr_tensorflow/models/backbone.py
+Username : Leonardo-Blanger
+Repository : detr_tensorflow
+'''
 import tensorflow as tf
 from tensorflow.keras.layers import ZeroPadding2D, Conv2D, ReLU, MaxPool2D
 
