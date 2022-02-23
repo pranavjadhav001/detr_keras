@@ -17,6 +17,7 @@ class BboxDraw:
             map(lambda x: (int(x[0] * 255), int(x[1] * 255), int(x[2] * 255)),
                 colors))
         self.font_path = font_path
+        
     def draw(self, image_path, boxes, labels):
         img = Image.open(image_path)
         font = ImageFont.truetype(font=self.font_path,
